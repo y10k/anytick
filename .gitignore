@@ -6,3 +6,9 @@
 /pkg/
 /spec/reports/
 /tmp/
+/vendor/
+/Gemfile.lock
+/README.html
+*~
+.#*
+\#*

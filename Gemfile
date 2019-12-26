@@ -1,6 +1,11 @@
-source "https://rubygems.org"
+# -*- coding: utf-8 -*-
+
+source 'https://rubygems.org'
 
 # Specify your gem's dependencies in anytick.gemspec
 gemspec
 
-gem "rake", "~> 12.0"
+# Local Variables:
+# mode: Ruby
+# indent-tabs-mode: nil
+# End:
