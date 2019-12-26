@@ -38,6 +38,8 @@ module Anytick
       private :`
     }
   end
+
+  autoload :DefineMethod, 'anytick/defmethod'
 end
 
 # Local Variables:
