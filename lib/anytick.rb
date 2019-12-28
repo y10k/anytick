@@ -11,6 +11,10 @@ module Anytick
     def make_rule
       self
     end
+
+    def backtick_caller
+      caller_locations(5, 1).first
+    end
   end
 
   class << self

@@ -23,7 +23,7 @@ module Anytick
     private :compat
 
     def execute(namespace, expr, _match_result)
-      location, *_ = caller_locations(4, 1)
+      location = backtick_caller
       if (namespace.respond_to? :module_eval) then
         namespace.module_eval(compat(expr), location.path, location.lineno)
       else

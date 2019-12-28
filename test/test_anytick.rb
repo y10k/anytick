@@ -19,7 +19,8 @@ module Anytick::Test
     def execute(namespace, _expr, match_result)
       expr = match_result
       context = @context_factory.new
-      context.instance_eval(expr)
+      location = backtick_caller
+      context.instance_eval(expr, location.path, location.lineno)
     end
   end
 
@@ -59,9 +60,10 @@ module Anytick::Test
     def test_eval_rule_syntax_error
       @c.include Anytick.rule(Anytick::Test::EvalRuleMakerExample)
 
-      assert_raise(SyntaxError) {
+      error = assert_raise(SyntaxError) {
         @o.instance_eval{ `eval: '"` }
       }
+      assert_include(error.message, "#{__FILE__}:#{__LINE__ - 2}")
     end
 
     def test_eval_rule_with_add_context
