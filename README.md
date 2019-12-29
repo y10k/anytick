@@ -3,7 +3,7 @@ Anytick
 
 Anytick extends ruby's backtick notation to do more than run a shell
 command.  For example, it defines the def method syntax in backtick,
-and makes Ruby 2.7's argument forwarding notation of `(...)' usable
+and makes Ruby 2.7's argument forwarding notation of `(...)` usable
 with Ruby 2.6.
 
 Installation
