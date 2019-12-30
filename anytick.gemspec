@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = <<-'EOF'
     Anytick extends ruby's backtick notation to do more than run a
     shell command.  For example, it defines the def method syntax in
-    backtick, and makes Ruby 2.7's argument forwarding notation of
+    backtick, and makes Ruby 2.7's arguments forwarding notation of
     `(...)' usable with Ruby 2.6.
   EOF
   spec.homepage      = 'https://github.com/y10k/anytick'
