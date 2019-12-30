@@ -44,6 +44,10 @@ module Anytick
   end
 
   autoload :DefineMethod, 'anytick/defmethod'
+
+  def self.DefineMethod(**kw_args)
+    DefineMethod.new(**kw_args)
+  end
 end
 
 # Local Variables:

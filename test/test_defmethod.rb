@@ -124,6 +124,94 @@ module Anytick::Test
 
       assert_equal([ args, block ], @o.bar(*args, &block))
     end
+
+    data('empty' => [ [] ],
+         '1'     => [ [ 1 ] ],
+         '2'     => [ [ 1, :a ] ],
+         '3'     => [ [ 1, :a, 'b' ] ],
+         'block' => [ [],             proc{} ],
+         'all'   => [ [ 1, :a, 'b' ], proc{} ])
+    def test_trailing_arguments_forwarding(data)
+      args, block = data
+
+      @c.class_eval{
+        extend Anytick.rule(Anytick::DefineMethod)
+
+        def foo(name, *args, &block)
+          [ name, args, block ]
+        end
+
+        `def bar(name, [...])
+           foo(name, [...])
+         end
+        `
+      }
+
+      assert_equal([ :foo, args, block ], @o.bar(:foo, *args, &block))
+    end
+
+    data('empty' => [ {} ],
+         '1'     => [ { a: 1 } ],
+         '2'     => [ { a: 1, b: :B } ],
+         '3'     => [ { a: 1, b: :B, c: 'C' } ],
+         'block' => [ {},                      proc{} ],
+         'all'   => [ { a: 1, b: :B, c: 'C' }, proc{} ])
+    def test_trailing_keyword_arguments_forwarding(data)
+      kw_args, block = data
+
+      @c.class_eval{
+        extend Anytick.rule(Anytick::DefineMethod)
+
+        def foo(name, **kw_args, &block)
+          [ name, kw_args, block ]
+        end
+
+        `def bar(name, [...])
+           foo(name, [...])
+         end
+        `
+      }
+
+      assert_equal([ :foo, kw_args, block ], @o.bar(:foo, **kw_args, &block))
+    end
+
+    data('empty' => [ [] ],
+         '1'     => [ [ 1 ] ],
+         '2'     => [ [ 1, :a ] ],
+         '3'     => [ [ 1, :a, 'b' ] ],
+         'block' => [ [],             proc{} ],
+         'all'   => [ [ 1, :a, 'b' ], proc{} ])
+    def test_trailing_arguments_forwarding_mark(data)
+      args, block = data
+
+      @c.class_eval{
+        extend Anytick.rule(Anytick::DefineMethod(trailing_arguments_forwarding: '<...>'))
+
+        def foo(name, *args, &block)
+          [ name, args, block ]
+        end
+
+        `def bar(name, <...>)
+           foo(name, <...>)
+         end
+        `
+      }
+
+      assert_equal([ :foo, args, block ], @o.bar(:foo, *args, &block))
+    end
+
+    def test_trailing_arguments_forwarding_disabled
+      error = assert_raise(SyntaxError) {
+        @c.class_eval{
+          extend Anytick.rule(Anytick::DefineMethod(trailing_arguments_forwarding: false))
+
+          `def foo(name, [...])
+           end
+          `
+        }
+      }
+      assert_include(error.message, "#{__FILE__}:#{__LINE__ - 5}")
+    end
   end
 end
 
